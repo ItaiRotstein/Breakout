@@ -34,8 +34,6 @@
         const ballRadius = 10;
         let ballColor = "#0095DD";
 
-        const traces = [];
-
         function drawBall() {
             ctx.beginPath();
             ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
@@ -51,37 +49,12 @@
             y += dy;
             if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
                 dx = -dx;
-                traces.unshift([x, y]);
             }
             if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
                 dy = -dy;
-                traces.unshift([x, y]);
-            }
-            drawTraces()
-        }
-
-        function drawTraces() {
-            for (let i = 0; i < traces.length; i++) {
-                traces[i]
-                ctx.beginPath();
-                ctx.rect(traces[i][0], traces[i][1], ballRadius, ballRadius);
-                ctx.fillStyle = "#FF0000";
-                ctx.fill();
-                ctx.closePath();
             }
         }
-
         setInterval(draw, 10);
-
-        function getRandomColor() {
-            var letters = '0123456789ABCDEF';
-            var color = '#';
-            for (var i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            return color;
-        }
-
     </script>
 </body>
 
