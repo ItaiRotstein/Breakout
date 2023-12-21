@@ -28,8 +28,8 @@
 
         let ballX = canvas.width / 2
         let ballY = canvas.height - 30
-        let ballSpeedX = 2
-        let ballSpeedY = -2
+        let dx = 2
+        let dy = -2
 
         const ballRadius = 10
         let ballColor = "#0095DD"
@@ -53,8 +53,13 @@
         }
 
         function drawPaddle() {
+            if (rightPressed) {
+                paddleX = Math.min(paddleX + 7, canvas.width - paddleWidth)
+            } else if (leftPressed) {
+                paddleX = Math.max(paddleX - 7, 0);
+            }
             if (upPressed) {
-                paddleWidth = Math.min(paddleWidth + 7, canvas.width  / 2)
+                paddleWidth = Math.min(paddleWidth + 7, canvas.width / 2)
             } else if (downPressed) {
                 paddleWidth = Math.max(paddleWidth - 7, ballRadius * 2);
             }
@@ -69,18 +74,17 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height)
             drawBall()
             drawPaddle()
-            ballX += ballSpeedX
-            ballY += ballSpeedY
-            if (ballX + ballSpeedX > canvas.width - ballRadius || ballX + ballSpeedX < ballRadius) {
-                ballSpeedX = -ballSpeedX
+            ballX += dx
+            ballY += dy
+            if (ballX + dx > canvas.width - ballRadius || ballX + dx < ballRadius) {
+                dx = -dx
             }
-            if (ballY + ballSpeedY > canvas.height - ballRadius || ballY + ballSpeedY < ballRadius) {
-                ballSpeedY = -ballSpeedY
-            }
-            if (rightPressed) {
-                paddleX = Math.min(paddleX + 7, canvas.width - paddleWidth)
-            } else if (leftPressed) {
-                paddleX = Math.max(paddleX - 7, 0);
+            if (ballY + dy < ballRadius) {
+                dy = -dy;
+            } else if (ballY + dy > canvas.height - ballRadius) {
+                alert("GAME OVER");
+                document.location.reload();
+                clearInterval(interval); // Needed for Chrome to end game
             }
 
         }
@@ -109,10 +113,10 @@
                 upPressed = false
             } else if (e.key === "Down" || e.key === "ArrowDown") {
                 downPressed = false
-            } 
+            }
 
         }
-        setInterval(draw, 10)
+        const interval = setInterval(draw, 10);
 
     </script>
 </body>
